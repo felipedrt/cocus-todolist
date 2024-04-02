@@ -14,6 +14,7 @@ import { TodoService } from './services/todo-service.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EncryptService } from './shared/encrypt-service.service';
 import { MarkdownRenderService } from './shared/markdown-render-service.service';
+import { PdfMakeService } from './shared/pdf-make-service.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { MarkdownRenderService } from './shared/markdown-render-service.service'
   providers: [
     TodoService,
     EncryptService,
-    MarkdownRenderService
+    MarkdownRenderService,
+    PdfMakeService
   ],
   bootstrap: [AppComponent]
 })

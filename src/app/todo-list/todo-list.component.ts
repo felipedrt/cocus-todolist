@@ -1,11 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { faEdit, faPlus, faTrash, faBinoculars, faArrowUpWideShort, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus, faTrash, faBinoculars, faArrowUpWideShort, faArrowDownWideShort, faPrint } from '@fortawesome/free-solid-svg-icons';
 import { ITodoNote } from '../interfaces/ITodoNote';
 import { TodoService } from '../services/todo-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ESortMode } from '../shared/enums/ESortMode';
+import { PdfMakeService } from '../shared/pdf-make-service.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -19,6 +20,7 @@ export class TodoListComponent implements OnInit {
   faPlus = faPlus;
   faArrowUpWideShort = faArrowUpWideShort;
   faArrowDownWideShort = faArrowDownWideShort;
+  faPrint = faPrint;
   todoList: ITodoNote[] = [];
   showModal = false;
   searchPattern = '';
@@ -36,11 +38,16 @@ export class TodoListComponent implements OnInit {
     }
   }
 
-  constructor(private router: Router, private todoListService: TodoService, private toastrService: ToastrService, private modalService: NgbModal) {
+  constructor(private router: Router,
+    private todoListService: TodoService,
+    private toastrService: ToastrService,
+    private modalService: NgbModal,
+    private pdfMakeService: PdfMakeService) {
   }
 
   ngOnInit(): void {
     this.todoList = this.todoListService.getItems().data as ITodoNote[];
+    console.log(this.todoList);
   }
 
   search() {
@@ -100,5 +107,13 @@ export class TodoListComponent implements OnInit {
         console.log(reason);
 			},
 		);
+  }
+
+  exportNote(todoItem: ITodoNote) {
+    this.pdfMakeService.exportTodoNoteToPdf(todoItem);
+  }
+
+  print() {
+    this.pdfMakeService.exportAllDataToPdf(this.todoList);
   }
 }
